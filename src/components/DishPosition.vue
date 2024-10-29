@@ -26,6 +26,7 @@
                 name="name"
                 label="Стоимость"
                 v-model="price"
+                type = "number"
             ></v-text-field>
             <v-select
                 :items="peoples"
@@ -43,10 +44,18 @@
             <v-btn color="success"
             @click="addDishPosition">Добавить</v-btn>
         </v-container>
-        <v-container grid-list-xs
+        <v-container class="d-flex justify-between"
         v-for="(position, index) in dishPosition"
         :key="index">
             {{ index }}: {{ positionInfo(position)}}
+
+            <v-btn color="red"
+            @click="delDishPosition(index)">Удалить</v-btn>
+        </v-container>
+        <v-container grid-list-xs>
+            <v-btn class="btn"
+            v-if="isResultBtnActive"
+            @click="this.$router.push({name:'result'})">К результатам</v-btn>
         </v-container>
         <v-container grid-list-xs>
             <v-card>
@@ -89,7 +98,7 @@ export default{
         const isAddPosition = ref(false);
 
         const positionStore = usePositionStore();
-        const {dishPosition, result} = storeToRefs(positionStore)
+        const {dishPosition, result, isResultBtnActive} = storeToRefs(positionStore)
         const payerName = ref('');
         const namePosition = ref('');
         const price = ref('')
@@ -104,11 +113,19 @@ export default{
                 price.value = '';
                 persons.value = [];
 
+                isResultBtnActive.value = true;
                 resultCalculate();
             }else{
                 alert('Заполнены не все поля!')
             }
 
+        }
+
+        const delDishPosition= (index)=>{
+            positionStore.delDishPosition(index);
+            if(dishPosition.value.length <= 0){
+                isResultBtnActive.value = false;
+            }
         }
         
         const positionInfo = (info) => {
@@ -123,6 +140,8 @@ export default{
             })
             positionStore.result = sum;
         }
+
+
         return{
             peoples,
             isAddPosition,
@@ -135,6 +154,8 @@ export default{
             positionInfo,
             resultCalculate,
             result,
+            isResultBtnActive,
+            delDishPosition,
         }
     }
 }
@@ -151,5 +172,12 @@ export default{
 }
 .text-center{
     text-align: center;
+}
+
+.d-flex{
+    display: flex;
+}
+.justify-between{
+    justify-content: space-between;
 }
 </style>

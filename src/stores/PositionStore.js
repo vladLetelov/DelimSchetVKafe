@@ -1,11 +1,12 @@
 import {defineStore} from 'pinia';
-import { ref } from 'vue';
+
 
 
 export const usePositionStore = defineStore('positionStore', {
     state: () => ({
         dishPosition:[],
         result: 0,
+        isResultBtnActive: false,
     }),
     actions: {
         addDishPosition(payerName, namePosition, price, persons){
@@ -17,6 +18,9 @@ export const usePositionStore = defineStore('positionStore', {
                     persons,
                 }
             );
-        }
+        },
+        delDishPosition(index){
+            this.dishPosition.splice(index,1);
+        },
     },
 });

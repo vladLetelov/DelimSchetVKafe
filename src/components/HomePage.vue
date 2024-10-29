@@ -5,10 +5,12 @@
                 Добавление персоны
             </v-card-title>
             <v-text-field
+                variant = "solo"
                 name="name"
-                label="label"
-                id="id"
+                label="Добавить персону"
+                density = "comfortable"
                 v-model="newPerson"
+                clearable
             ></v-text-field>
             <v-card-actions>
                 <v-btn class="btn"
@@ -19,7 +21,7 @@
                 v-for="(people, index) in peoples"
                 :key="index"
                 class="d-flex justify-between">
-                    {{ index }}: {{ people.name }}
+                    {{ people.name }}
 
                 <v-btn color="red"
                 @click="delPerson(index)">Удалить</v-btn>
