@@ -1,18 +1,23 @@
 import { createRouter, createWebHashHistory } from "vue-router";
-import HomePage from "../components/HomePage.vue"
+import StartPage from '../components/StartPage.vue';
+import AddPerson from "../components/AddPerson.vue"
 import DishPosition from "../components/DishPosition.vue"
 import ResultWindow from "../components/ResultWindow.vue";
 import { usePersonStore } from "../stores/PersonStore";
 import { usePositionStore } from "../stores/PositionStore";
 
-
 const router = createRouter({
     history:createWebHashHistory(),
     routes:[
+      {
+        path:"/",
+        name:'start',
+        component:StartPage,
+      },
         {
-            path:"/",
-            name:'home',
-            component:HomePage,
+            path:"/AddPerson",
+            name:'addPerson',
+            component:AddPerson,
         },
         {
             path:"/DishPosition",
@@ -20,10 +25,13 @@ const router = createRouter({
             component:DishPosition,
             beforeEnter:(to, from, next)=>{
                 const personStorage = usePersonStore();
-                if(personStorage.peoples.length > 0){ //проверка является ли пользователь авторизованные, если да то его пропускает
+                if(personStorage.peoples.length === 1){
+                  alert("Чтобы продолжить добавьте еще персону");
+
+                }else if(personStorage.peoples.length > 1){
                   next()
                 }else{
-                  next({name: 'home'})//иначе доступ его возвращают на эту-же страницу
+                  next({name:'start'});
                 }
             },
         },
@@ -33,10 +41,12 @@ const router = createRouter({
             component:ResultWindow,
             beforeEnter:(to, from, next)=>{
                 const positionStore = usePositionStore();
-                if(positionStore.dishPosition.length > 0){ //проверка является ли пользователь авторизованные, если да то его пропускает
+                if(positionStore.dishPosition.length === 1){ 
+                  alert("Чтобы продолжить добавьте еще позицию");
+                }else if(positionStore.dishPosition.length > 1){
                   next()
                 }else{
-                  next({name: 'dishPosition'})//иначе доступ его возвращают на эту-же страницу
+                  next({name:'start'});
                 }
             }
         },

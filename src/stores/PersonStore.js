@@ -14,7 +14,7 @@ export const usePersonStore = defineStore('personStore', {
       delitePerson(index) {
         this.peoples.splice(index, 1);
       },
-      updateBalances() {
+      CalculateDebt() {
         // Очищаем предыдущие данные долгов
         this.debts = [];
 

@@ -1,15 +1,15 @@
 <template>
 <v-container grid-list-xs>
     <v-card>
-        <v-card-title primary-title>
+        <v-card-title primary-title
+            v-if="!isEdited">
             Добавление новой позиции
         </v-card-title>
+        <v-card-title primary-title
+            v-else>
+            Редактирование позиции
+        </v-card-title>
         <v-container grid-list-xs>
-            <v-btn class="btn"
-            @click="isAddPosition = true">Добавить позицию</v-btn>
-        </v-container>
-        <v-container grid-list-xs
-        v-if="isAddPosition">
         <v-select
                 :items="peoples"
                 item-value="name"
@@ -38,35 +38,57 @@
                 v-model="persons">
             </v-select>
         </v-container>
-        <v-container grid-list-xs>
+        <v-card-actions>
             <v-btn class="btn"
             @click="this.$router.back()">Назад</v-btn>
-            <v-btn color="success"
-            @click="addDishPosition">Добавить</v-btn>
-        </v-container>
-        <v-container class="d-flex justify-between"
-        v-for="(position, index) in dishPosition"
-        :key="index">
-            {{ index }}: {{ positionInfo(position)}}
+            <v-btn class="btn"
+            @click="addDishPosition"
+            v-if="!isEdited">Добавить</v-btn>
+        </v-card-actions>
+    </v-card>
+</v-container>
+<v-container grid-list-xs>
+    <v-card>
+        <v-card-title primary-title>
+            Информация о позициях
+        </v-card-title>
+        <v-card-text v-if="dishPosition.length <= 0">
+            Список позиций пуст...
+        </v-card-text>
 
-            <v-btn color="red"
-            @click="delDishPosition(index)">Удалить</v-btn>
+        <v-container class="list"
+            v-for="(position, index) in dishPosition"
+            :key="index">
+            Позиция {{ index+1 }}: {{ positionInfo(position)}}
+
+            <v-container class="d-flex justify-between ">
+                <v-btn color="red"
+                    @click="delDishPosition(index)"
+                    :disabled="isEdited">Удалить</v-btn>
+                <v-btn color="green"
+                    @click="editDishPosition(index)"
+                    v-if="!isEdited"
+                    >Редактировать</v-btn>
+                <v-btn color="green"
+                    @click="saveDishPosition(index)"
+                    v-else
+                    :disabled="editingIndex !== index">Сохранить</v-btn>
+            </v-container>
         </v-container>
-        <v-container grid-list-xs>
+        <v-card-actions grid-list-xs>
             <v-btn class="btn"
             v-if="isResultBtnActive"
             @click="this.$router.push({name:'result'})">К результатам</v-btn>
-        </v-container>
-        <v-container grid-list-xs>
-            <v-card>
-                <v-card-title primary-title class="text-center"
-                >
-                    Промежуточный итог: {{ result }}
-                </v-card-title>
-            </v-card>
-        </v-container>
-    </v-card>  
+        </v-card-actions>
+    </v-card>
 </v-container>
+<v-container grid-list-xs>
+    <v-card>
+        <v-card-title primary-title class="text-center">
+            Промежуточный итог: {{ result }}
+        </v-card-title>
+    </v-card>
+        </v-container> 
 </template>
     
 <script>
@@ -91,18 +113,21 @@ export default{
 
         const handleBeforeUnload = (event) => {
             event.returnValue = "Изменения не сохранятся!";
+            this.$router.back();
         };
 
         const personStore = usePersonStore();
         const {peoples} = storeToRefs(personStore);
-        const isAddPosition = ref(false);
 
         const positionStore = usePositionStore();
-        const {dishPosition, result, isResultBtnActive} = storeToRefs(positionStore)
+        const {dishPosition, result, isResultBtnActive, editingPosition} = storeToRefs(positionStore)
         const payerName = ref('');
         const namePosition = ref('');
         const price = ref('')
         const persons = ref([]);
+
+        const isEdited = ref(false);
+        const editingIndex = ref("");
 
         const addDishPosition =  ()=>{
             if(payerName.value.trim() !== '' && namePosition.value.trim() !== ''&& 
@@ -126,10 +151,32 @@ export default{
             if(dishPosition.value.length <= 0){
                 isResultBtnActive.value = false;
             }
+            resultCalculate();
         }
         
+        const editDishPosition = (index)=>{
+            payerName.value = positionStore.dishPosition[index].payerName;
+            namePosition.value = positionStore.dishPosition[index].namePosition;
+            price.value = positionStore.dishPosition[index].price;
+            persons.value = positionStore.dishPosition[index].persons;
+            isEdited.value = true;
+            editingIndex.value = index;
+        }
+
+        const saveDishPosition = (index) => {
+            isEdited.value = false;
+            positionStore.updateDishPosition(index, payerName.value, namePosition.value, price.value, persons.value);
+
+            payerName.value = "";
+            namePosition.value = "";
+            price.value = "";
+            persons.value = [];
+            editingIndex.value = "";
+            resultCalculate();
+        }
+
         const positionInfo = (info) => {
-            return `${info.payerName}, ${info.namePosition}, ${info.price}, (${info.persons.join(',')})`
+            return `Платильцик: ${info.payerName}; Наименование: ${info.namePosition}; Цена: ${info.price}; Кто ел/пил: ${info.persons.join(',')}`
         };
 
         const resultCalculate = () => {
@@ -144,7 +191,6 @@ export default{
 
         return{
             peoples,
-            isAddPosition,
             payerName,
             namePosition,
             price,
@@ -156,6 +202,10 @@ export default{
             result,
             isResultBtnActive,
             delDishPosition,
+            editDishPosition,
+            isEdited,
+            saveDishPosition,
+            editingIndex,
         }
     }
 }
@@ -179,5 +229,11 @@ export default{
 }
 .justify-between{
     justify-content: space-between;
+}
+
+.list{
+    border-radius: 20px;
+    margin: 10px;
+    background-color:#FFF3CF;
 }
 </style>

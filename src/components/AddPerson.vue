@@ -10,30 +10,33 @@
                 label="Добавить персону"
                 density = "comfortable"
                 v-model="newPerson"
-                clearable
             ></v-text-field>
             <v-card-actions>
                 <v-btn class="btn"
                 @click="addPerson">Добавить</v-btn>
             </v-card-actions>
-            <v-container class="d-flex flex-column justify-between">
-                <v-card-text
+        </v-card>
+    </v-container>
+    <v-container class="d-flex flex-column justify-between"
+        v-if="isAddPerson">
+        <v-card>
+            <v-card-text
                 v-for="(people, index) in peoples"
                 :key="index"
-                class="d-flex justify-between">
+                class="d-flex justify-between list">
                     {{ people.name }}
 
                 <v-btn color="red"
-                @click="delPerson(index)">Удалить</v-btn>
+                    @click="delPerson(index)">Удалить</v-btn>
             </v-card-text>
-            </v-container>
-            <v-container>
+            <v-card-actions>
                 <v-btn class="btn"
-                v-if="isAddPerson"
-                @click="this.$router.push({name: 'dishPosition'})">Далее</v-btn>
-            </v-container>
+                    v-if="isAddPerson"
+                    @click="this.$router.push({name: 'dishPosition'})">Далее</v-btn>
+            </v-card-actions>
         </v-card>
     </v-container>
+
 </template>
     
 <script>
@@ -106,5 +109,10 @@ export default{
 }
 .justify-between{
     justify-content: space-between;
+}
+.list{
+    border-radius: 20px;
+    margin: 10px;
+    background-color:#FFF3CF;
 }
 </style>

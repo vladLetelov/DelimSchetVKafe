@@ -7,6 +7,7 @@ export const usePositionStore = defineStore('positionStore', {
         dishPosition:[],
         result: 0,
         isResultBtnActive: false,
+        editingPosition: null,
     }),
     actions: {
         addDishPosition(payerName, namePosition, price, persons){
@@ -22,5 +23,11 @@ export const usePositionStore = defineStore('positionStore', {
         delDishPosition(index){
             this.dishPosition.splice(index,1);
         },
+        updateDishPosition(editingIndex, payerName, namePosition, price, persons){
+            this.dishPosition[editingIndex].payerName = payerName;
+            this.dishPosition[editingIndex].namePosition = namePosition;
+            this.dishPosition[editingIndex].price = price;
+            this.dishPosition[editingIndex].persons = persons;
+        }
     },
 });
