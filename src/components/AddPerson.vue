@@ -1,8 +1,19 @@
 <template>
-    <v-container grid-list-xs>
+    <v-container>
         <v-card>
-            <v-card-title primary-title>
+            <v-card-title class="d-flex">
                 Добавление персоны
+                <v-bottom-sheet>
+                    <template v-slot:activator="{ props }">
+                        <v-btn v-bind="props" text="?" color="blue" class="border-radius"></v-btn>
+                    </template>
+
+                    <v-card
+                        text="Необходимо добавить минимум два человека, которые будут участвовать при расчете долгов"
+                        width="30%"
+                        class="text-center"
+                    ></v-card>
+                </v-bottom-sheet>
             </v-card-title>
             <v-text-field
                 variant = "solo"
@@ -110,9 +121,22 @@ export default{
 .justify-between{
     justify-content: space-between;
 }
+.text-center{
+    margin: auto;
+    background-color:#C5C6C7;
+}
+.border-radius{
+    border-radius:50%;
+    margin: 0 0 0 10px;
+}
 .list{
     border-radius: 20px;
     margin: 10px;
     background-color:#FFF3CF;
+}
+v-card{
+    background-color: #C5C6C7;
+    border-radius: 50px;
+
 }
 </style>

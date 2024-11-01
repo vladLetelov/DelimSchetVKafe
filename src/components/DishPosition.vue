@@ -4,6 +4,23 @@
         <v-card-title primary-title
             v-if="!isEdited">
             Добавление новой позиции
+            <v-bottom-sheet>
+                <template v-slot:activator="{ props }">
+                    <v-btn v-bind="props" text="?" color="blue" class="border-radius"></v-btn>
+                </template>
+
+                <v-card
+                    width="50%"
+                    class="block-center"
+                >
+                    <v-card-text>
+                       <p> - В первом поле выбирается платильщик, человек, который оплачивал блюдо.</p>
+                       <p>- Во втором поле указывается название блюда.</p>
+                       <p>- В третьем поле указывается цена, за которую платильщик купил блюдо.</p>
+                       <p>- В четвертом поле выбираются люди, которые употребляли блюдо и между которыми цена за блюдо делится.</p>
+                    </v-card-text>
+                </v-card>
+            </v-bottom-sheet>
         </v-card-title>
         <v-card-title primary-title
             v-else>
@@ -30,11 +47,11 @@
             ></v-text-field>
             <v-select
                 :items="peoples"
+                multiple
                 item-value="name"
                 item-title="name"
                 label="Выберите человека/людей"
                 chips
-                multiple
                 v-model="persons">
             </v-select>
         </v-container>
@@ -220,9 +237,6 @@ export default{
     background-color:orange;
     margin: auto;
 }
-.text-center{
-    text-align: center;
-}
 
 .d-flex{
     display: flex;
@@ -230,7 +244,15 @@ export default{
 .justify-between{
     justify-content: space-between;
 }
-
+.block-center{
+    margin: auto;
+    background-color:#C5C6C7;
+    text-align: left;
+}
+.border-radius{
+    border-radius:50%;
+    margin: 0 0 0 10px;
+}
 .list{
     border-radius: 20px;
     margin: 10px;
