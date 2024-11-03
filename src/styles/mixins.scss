@@ -1,0 +1,36 @@
+@mixin display-flex {
+    display: flex;
+}
+
+@mixin btn-style {
+    background-color: #FCA311 !important;
+    margin: auto;
+}
+
+@mixin border-radius {
+    border-radius: 50% !important;
+    margin: 0 0 0 10px;
+}
+
+@mixin justify-between{
+    justify-content: space-between;
+}
+
+@mixin block-center{
+        margin: auto;
+        background-color:#C5C6C7 !important;
+}
+
+@mixin list{
+    border-radius: 20px;
+    margin: 10px;
+    background-color:#4A4A4A !important;
+}
+
+@mixin cardStyle{
+    border-radius: 30px;
+}
+@mixin textStyle{
+    color: #007B82 !important;
+    font-size: 14pt;
+}

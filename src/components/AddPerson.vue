@@ -1,7 +1,7 @@
 <template>
     <v-container>
-        <v-card>
-            <v-card-title class="d-flex">
+        <v-card class="cardStyle textStyle">
+            <v-card-title class="display-flex">
                 Добавление персоны
                 <v-bottom-sheet>
                     <template v-slot:activator="{ props }">
@@ -11,30 +11,33 @@
                     <v-card
                         text="Необходимо добавить минимум два человека, которые будут участвовать при расчете долгов"
                         width="30%"
-                        class="text-center"
+                        class="block-center textStyle"
                     ></v-card>
                 </v-bottom-sheet>
             </v-card-title>
-            <v-text-field
-                variant = "solo"
-                name="name"
-                label="Добавить персону"
-                density = "comfortable"
-                v-model="newPerson"
-            ></v-text-field>
-            <v-card-actions>
-                <v-btn class="btn"
-                @click="addPerson">Добавить</v-btn>
-            </v-card-actions>
+            <v-container>
+                <v-text-field
+                    name="name"
+                    label="Добавить персону"
+                    density = "comfortable"
+                    v-model="newPerson"
+                ></v-text-field>
+                <v-card-actions>
+                    <v-btn class="btn"
+                    @click="this.$router.back()">Назад</v-btn>
+                    <v-btn class="btn"
+                    @click="addPerson">Добавить</v-btn>
+                </v-card-actions>
+            </v-container>
         </v-card>
     </v-container>
-    <v-container class="d-flex flex-column justify-between"
+    <v-container class="d-flex flex-column"
         v-if="isAddPerson">
-        <v-card>
+        <v-card class="cardStyle">
             <v-card-text
                 v-for="(people, index) in peoples"
                 :key="index"
-                class="d-flex justify-between list">
+                class="d-flex justify-between list textStyle">
                     {{ people.name }}
 
                 <v-btn color="red"
@@ -55,6 +58,7 @@ import {ref} from 'vue'
 import { usePersonStore } from '../stores/PersonStore.js';
 import { storeToRefs } from 'pinia';
 import { onBeforeUnmount, onMounted } from 'vue';
+
 
 export default{
     name:'Home',
@@ -107,36 +111,13 @@ export default{
 }
 </script>
     
-<style lang="scss" scoped>
-.btn{
-    background-color:orange;
-    margin: auto;
-}
-.d-flex{
-    display: flex;
-}
+<style lang="scss">
+@import "../styles/mixins.scss";
+
 .flex-column{
     flex-direction: column;
 }
-.justify-between{
-    justify-content: space-between;
-}
-.text-center{
-    margin: auto;
-    background-color:#C5C6C7;
-}
-.border-radius{
-    border-radius:50%;
-    margin: 0 0 0 10px;
-}
-.list{
-    border-radius: 20px;
-    margin: 10px;
-    background-color:#FFF3CF;
-}
-v-card{
-    background-color: #C5C6C7;
-    border-radius: 50px;
-
+.display-flex{
+    display: flex;
 }
 </style>

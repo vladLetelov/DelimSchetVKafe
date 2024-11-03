@@ -1,6 +1,6 @@
 <template>
 <v-container grid-list-xs>
-    <v-card>
+    <v-card class="cardStyle">
         <v-card-title primary-title class="text-center"> 
             Итоговые результаты
             <v-bottom-sheet>
@@ -10,7 +10,7 @@
 
                 <v-card
                     width="50%"
-                    class="block-center"
+                    class="block-center textStyle"
                 >
                     <v-card-text>
                        <p>Производится расчет долгов между людьми, которые ели одно блюдо.</p>
@@ -20,21 +20,23 @@
             </v-bottom-sheet>
         </v-card-title>
         <v-container>
-            <v-card 
+            <v-card class="cardStyle list"
                 v-if="debts.length > 0">
-                <v-card-text
+                <v-card-text class="textStyle"
                     v-for="(debt, index) in debts"
                     :key="index"
                 >
-                    {{ debt.from }} должен {{ debt.to }} <span>{{ debt.amount }} рублей</span>
+                    {{ debt.from }} должен {{ debt.to }} <span>{{ debt.amount.toFixed(2) }} рублей</span>
                 </v-card-text>
             </v-card>
-            <v-card 
+            <v-card class="cardStyle"
                 v-else>
                 <v-card-text>
                     Никто, никому, ничего не должен
                 </v-card-text>
             </v-card>
+            <v-btn class="btn"
+            @click="this.$router.back()">Назад</v-btn>
         </v-container>
     </v-card>
 </v-container>
@@ -46,7 +48,6 @@ import { storeToRefs } from 'pinia';
 import { usePositionStore } from '../stores/PositionStore.js';
 
 export default{
-
     name:'ResultWindow',
     setup(){
         const userStore = usePersonStore();
@@ -56,15 +57,10 @@ export default{
         const {dishPosition} = storeToRefs(positionStore);
 
           userStore.CalculateDebt(); // Вызываем обновление долгов
-    
-        const positionInfo = (info) => {
-            return `${info.name}: ${info.balance}`
-        };
 
 
         return{
             dishPosition,
-            positionInfo,
             peoples,
             debts,
         }
@@ -72,23 +68,21 @@ export default{
 }
 </script>
     
-<style scoped>
+<style lang="scss" scoped>
+@import "../styles/mixins.scss";
+
 .text-center{
     text-align: center;
+    @include textStyle;
 }
-.block-center{
-    margin: auto;
-    background-color:#C5C6C7;
-    text-align: left;
-}
-.border-radius{
-    border-radius:50%;
-    margin: 0 0 0 10px;
-}
+
 span{
     text-decoration: underline;
+    color:red;
 }
-.card_list{
-    padding: 20px;
+
+
+.block-center{
+    @include block-center;
 }
 </style>

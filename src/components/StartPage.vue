@@ -14,7 +14,7 @@
 
     <v-container grid-list-xs>
     <v-footer id="footer">
-        <v-card class="footer_card">
+        <v-card class="footer_card textStyle">
             <div id="footer_slogan">
                 <p>Расчитать долг по чеку просто!</p>
             </div>
@@ -43,16 +43,15 @@ export default{
 }
 </script>
     
-<style scoped>
+<style lang="scss">
+@import "../styles/mixins.scss";
+
 #container{
     padding: 20px;
     border-radius: 50px;
     margin: 30vh auto;
-    background-color: #C5C6C7
-}
-.btn{
-    background-color:orange;
-    margin: auto;
+    @include cardStyle;
+    @include textStyle
 }
 #footer{
   position: fixed;
@@ -60,14 +59,14 @@ export default{
   left: 0;
   text-align: center;
   width: 100%;
-  background-color:#1F2833;
+
 }
 .contact_tg{
-  color: blue;
+  color: red;
 }
 #footer_slogan{
+  @include textStyle;
   font-size: 20pt;
-  color:black;
 }
 .footer_container{
     margin: 0 auto;
@@ -75,7 +74,8 @@ export default{
 .footer_card{
     width: 100%;
     text-align: center;
-    background-color:orange;
+    @include cardStyle;
 }
+
 
 </style>

@@ -1,6 +1,6 @@
 <template>
 <v-container grid-list-xs>
-    <v-card>
+    <v-card class="cardStyle textStyle">
         <v-card-title primary-title
             v-if="!isEdited">
             Добавление новой позиции
@@ -11,7 +11,7 @@
 
                 <v-card
                     width="50%"
-                    class="block-center"
+                    class="block-center textStyle"
                 >
                     <v-card-text>
                        <p> - В первом поле выбирается платильщик, человек, который оплачивал блюдо.</p>
@@ -65,7 +65,7 @@
     </v-card>
 </v-container>
 <v-container grid-list-xs>
-    <v-card>
+    <v-card class="cardStyle textStyle">
         <v-card-title primary-title>
             Информация о позициях
         </v-card-title>
@@ -78,7 +78,7 @@
             :key="index">
             Позиция {{ index+1 }}: {{ positionInfo(position)}}
 
-            <v-container class="d-flex justify-between ">
+            <v-container class="d-flex">
                 <v-btn color="red"
                     @click="delDishPosition(index)"
                     :disabled="isEdited">Удалить</v-btn>
@@ -100,12 +100,12 @@
     </v-card>
 </v-container>
 <v-container grid-list-xs>
-    <v-card>
+    <v-card class="textStyle">
         <v-card-title primary-title class="text-center">
             Промежуточный итог: {{ result }}
         </v-card-title>
     </v-card>
-        </v-container> 
+</v-container> 
 </template>
     
 <script>
@@ -229,33 +229,12 @@ export default{
 </script>
     
 <style lang="scss" scoped>
-.display-flex{
-    display: flex;
-}
+@import "../styles/mixins.scss";
 
-.btn{
-    background-color:orange;
-    margin: auto;
-}
-
-.d-flex{
-    display: flex;
-}
-.justify-between{
-    justify-content: space-between;
-}
 .block-center{
-    margin: auto;
-    background-color:#C5C6C7;
+    @include block-center;
     text-align: left;
 }
-.border-radius{
-    border-radius:50%;
-    margin: 0 0 0 10px;
-}
-.list{
-    border-radius: 20px;
-    margin: 10px;
-    background-color:#FFF3CF;
-}
+
+
 </style>

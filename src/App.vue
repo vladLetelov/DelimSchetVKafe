@@ -1,7 +1,7 @@
 <template>
-    <div id="app">
+    <v-app id="app">
         <router-view />
-    </div>
+    </v-app>
 </template>
   
 <script>
@@ -10,6 +10,31 @@ export default{
 }
 </script>
   
-<style lang="scss" scoped>
+<style lang="scss">
+@import "../src/styles/mixins.scss";
+.btn {
+    @include btn-style;
+    @include textStyle;
+}
+.border-radius {
+    @include border-radius;
+}
+.textStyle{
+    @include textStyle;
+}
+.list{
+    @include list;
+}
+.cardStyle{
+    @include cardStyle;
+}
+.d-flex{
+    @include display-flex;
+    @include justify-between;
+}
+.block-center{
+    @include block-center;
+    text-align: left;
+}
 
-</style>>
+</style>

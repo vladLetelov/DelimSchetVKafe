@@ -5,7 +5,7 @@ import 'vuetify/styles'
 
       // Определение темы (опционально)
       const myTheme = {
-        dark: false, // Определяет светлую или темную тему
+        dark: true, // Определяет светлую или темную тему
         colors: {
           primary: '#1867C0', // Определяет цвет primary 
           secondary: '#5C6BC0', // Определяет цвет secondary
