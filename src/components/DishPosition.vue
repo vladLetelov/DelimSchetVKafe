@@ -1,12 +1,18 @@
 <template>
-<v-container grid-list-xs>
+<v-container>
     <v-card class="cardStyle textStyle">
-        <v-card-title primary-title
-            v-if="!isEdited">
+        <v-card-title
+            v-if="!isEdited"><!--Условие если пользователь в режиме редактирования, меняется текст-->
             Добавление новой позиции
-            <v-bottom-sheet>
-                <template v-slot:activator="{ props }">
-                    <v-btn v-bind="props" text="?" color="blue" class="border-radius"></v-btn>
+            <v-bottom-sheet><!-- действия при нажатии на кнопку вызова подсказки -->
+                <template 
+                    v-slot:activator="{ props }">
+                    <v-btn 
+                        v-bind="props" 
+                        text="?"
+                        color="blue" 
+                        class="border-radius">
+                    </v-btn>
                 </template>
 
                 <v-card
@@ -22,29 +28,29 @@
                 </v-card>
             </v-bottom-sheet>
         </v-card-title>
-        <v-card-title primary-title
+        <v-card-title
             v-else>
             Редактирование позиции
         </v-card-title>
-        <v-container grid-list-xs>
-        <v-select
+        <v-container><!--Заполнение полей для создания новой позиции-->
+            <v-select
                 :items="peoples"
                 item-value="name"
                 item-title="name"
                 label="Выберите платильщика"
                 v-model="payerName">
-                </v-select>
+            </v-select> <!--Поле выбора платильщика-->
             <v-text-field
                 name="name"
                 label="Наименование позиции"
                 v-model="namePosition"
-            ></v-text-field>
+            ></v-text-field> <!--Поле ввода название позиции-->
             <v-text-field
                 name="name"
                 label="Стоимость"
                 v-model="price"
                 type = "number"
-            ></v-text-field>
+            ></v-text-field><!--Поле ввода стоимости позиции-->
             <v-select
                 :items="peoples"
                 multiple
@@ -52,56 +58,63 @@
                 item-title="name"
                 label="Выберите человека/людей"
                 chips
-                v-model="persons">
+                v-model="persons"> <!--Поле выбора человек участвующих при расчете долгов-->
             </v-select>
         </v-container>
         <v-card-actions>
             <v-btn class="btn"
-            @click="this.$router.back()">Назад</v-btn>
+                @click="$router.back()">Назад</v-btn><!--Кнопка возврата на страницу добавления персон-->
             <v-btn class="btn"
-            @click="addDishPosition"
-            v-if="!isEdited">Добавить</v-btn>
+                @click="addDishPosition"
+                v-if="!isEdited">Добавить</v-btn><!--Кнопка добавления новой позиции с введенными данными-->
         </v-card-actions>
     </v-card>
 </v-container>
-<v-container grid-list-xs>
+
+<v-container>
     <v-card class="cardStyle textStyle">
-        <v-card-title primary-title>
+        <v-card-title>
             Информация о позициях
         </v-card-title>
-        <v-card-text v-if="dishPosition.length <= 0">
+        <v-card-text 
+            v-if="dishPosition.length <= 0">
             Список позиций пуст...
         </v-card-text>
 
-        <v-container class="list"
-            v-for="(position, index) in dishPosition"
-            :key="index">
-            Позиция {{ index+1 }}: {{ positionInfo(position)}}
-
-            <v-container class="d-flex">
-                <v-btn color="red"
-                    @click="delDishPosition(index)"
-                    :disabled="isEdited">Удалить</v-btn>
-                <v-btn color="green"
-                    @click="editDishPosition(index)"
-                    v-if="!isEdited"
-                    >Редактировать</v-btn>
-                <v-btn color="green"
-                    @click="saveDishPosition(index)"
-                    v-else
-                    :disabled="editingIndex !== index">Сохранить</v-btn>
-            </v-container>
-        </v-container>
-        <v-card-actions grid-list-xs>
+        <v-card>
+            <v-card-title class="list cardStyle textStyle"
+                v-for="(position, index) in dishPosition"
+                :key="index">
+                Позиция {{ index+1 }}: {{ positionInfo(position)}}
+                <v-container class="d-flex">
+                    <v-btn 
+                        color="red"
+                        @click="delDishPosition(index)"
+                        :disabled="isEdited">Удалить</v-btn>
+                    <v-btn 
+                        color="green"
+                        @click="editDishPosition(index)"
+                        v-if="!isEdited"
+                        >Редактировать</v-btn>
+                    <v-btn 
+                        color="green"
+                        @click="saveDishPosition(index)"
+                        v-else
+                        :disabled="editingIndex !== index">Сохранить</v-btn>
+                </v-container>
+            </v-card-title>              
+        </v-card>
+        <v-card-actions>
             <v-btn class="btn"
-            v-if="isResultBtnActive"
-            @click="this.$router.push({name:'result'})">К результатам</v-btn>
+                v-if="isResultBtnActive"
+                @click="$router.push({name:'result'})">К результатам</v-btn>
         </v-card-actions>
     </v-card>
 </v-container>
-<v-container grid-list-xs>
-    <v-card class="textStyle">
-        <v-card-title primary-title class="text-center">
+
+<v-container>
+    <v-card class="textStyle cardStyle">
+        <v-card-title class="text-center">
             Промежуточный итог: {{ result }}
         </v-card-title>
     </v-card>
@@ -109,11 +122,10 @@
 </template>
     
 <script>
-import { ref } from 'vue';
+import { ref,onBeforeUnmount, onMounted } from 'vue';
 import { usePersonStore } from '../stores/PersonStore.js';
 import { storeToRefs } from 'pinia';
 import { usePositionStore } from '../stores/PositionStore.js';
-import { onBeforeUnmount, onMounted } from 'vue';
 
 
 
@@ -130,7 +142,6 @@ export default{
 
         const handleBeforeUnload = (event) => {
             event.returnValue = "Изменения не сохранятся!";
-            this.$router.back();
         };
 
         const personStore = usePersonStore();
@@ -138,6 +149,7 @@ export default{
 
         const positionStore = usePositionStore();
         const {dishPosition, result, isResultBtnActive, editingPosition} = storeToRefs(positionStore)
+
         const payerName = ref('');
         const namePosition = ref('');
         const price = ref('')
@@ -149,14 +161,18 @@ export default{
         const addDishPosition =  ()=>{
             if(payerName.value.trim() !== '' && namePosition.value.trim() !== ''&& 
             price.value.trim() !== '' && persons.length !== 0){
-                positionStore.addDishPosition(payerName.value, namePosition.value, price.value, persons.value);
-                payerName.value = '';
-                namePosition.value = '';
-                price.value = '';
-                persons.value = [];
+                if(price.value > 0 && price.value < 99999){
+                    positionStore.addDishPosition(payerName.value, namePosition.value, price.value, persons.value);
+                    payerName.value = '';
+                    namePosition.value = '';
+                    price.value = '';
+                    persons.value = [];
 
-                isResultBtnActive.value = true;
-                resultCalculate();
+                    isResultBtnActive.value = true;
+                    resultCalculate();
+                }else{
+                    alert("Цена указывается в диапазоне от 1 до 99999!")
+                }
             }else{
                 alert('Заполнены не все поля!')
             }
@@ -181,15 +197,24 @@ export default{
         }
 
         const saveDishPosition = (index) => {
-            isEdited.value = false;
-            positionStore.updateDishPosition(index, payerName.value, namePosition.value, price.value, persons.value);
+            if(payerName.value.trim() !== '' && namePosition.value.trim() !== ''&& 
+            price.value.trim() !== '' && persons.length !== 0){
+                if(price.value > 0 && price.value < 99999){
+                    isEdited.value = false;
+                    positionStore.updateDishPosition(index, payerName.value, namePosition.value, price.value, persons.value);
 
-            payerName.value = "";
-            namePosition.value = "";
-            price.value = "";
-            persons.value = [];
-            editingIndex.value = "";
-            resultCalculate();
+                    payerName.value = "";
+                    namePosition.value = "";
+                    price.value = "";
+                    persons.value = [];
+                    editingIndex.value = "";
+                    resultCalculate();
+                }else{
+                    alert("Цена указывается в диапазоне от 1 до 99999!")
+                }
+            }else{
+                alert('Заполнены не все поля!')
+            }
         }
 
         const positionInfo = (info) => {

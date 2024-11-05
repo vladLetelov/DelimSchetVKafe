@@ -12,7 +12,12 @@ export const usePersonStore = defineStore('personStore', {
           this.peoples.push({ name, balance: 0 });
       },
       delitePerson(index) {
-        this.peoples.splice(index, 1);
+        const removedPerson = this.peoples[index].name;
+      this.peoples.splice(index, 1);
+
+      // Обновление позиций при удалении персоны
+      const positionStore = usePositionStore();
+      positionStore.updatePositionsAfterPersonRemoval(removedPerson);
       },
       CalculateDebt() {
         // Очищаем предыдущие данные долгов

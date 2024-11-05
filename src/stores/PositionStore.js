@@ -28,6 +28,14 @@ export const usePositionStore = defineStore('positionStore', {
             this.dishPosition[editingIndex].namePosition = namePosition;
             this.dishPosition[editingIndex].price = price;
             this.dishPosition[editingIndex].persons = persons;
-        }
+        },
+        updatePositionsAfterPersonRemoval(removedPerson) {
+            this.dishPosition = this.dishPosition.filter(position => {
+
+              position.persons = position.persons.filter(person => person !== removedPerson);
+
+              return position.persons.length > 0;
+            });
+          },
     },
 });

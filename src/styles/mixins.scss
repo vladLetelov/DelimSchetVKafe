@@ -28,7 +28,8 @@
 }
 
 @mixin cardStyle{
-    border-radius: 30px;
+    border-radius: 30px!important   ;
+    border:2px solid #007B82 !important;
 }
 @mixin textStyle{
     color: #007B82 !important;
