@@ -1,45 +1,38 @@
 <template>
-    <v-container grid-list-xs>
-        <v-card id="container">
+    <v-container>
+        <v-card id="container"><!--Карточка с названием и кнопкой-->
             <v-card-title>
                 Расчитать долги
             </v-card-title>
             <v-card-actions>
                 <v-btn class="btn"
-                    variant="outlined"
-                    @click="this.$router.push({name: 'addPerson'})">Старт</v-btn>
+                    @click="this.$router.push({name: 'addPerson'})">Начать</v-btn><!--Кнопка, которая переносит пользователя на страницу добавления персон-->
             </v-card-actions>
         </v-card>
     </v-container>
 
-    <v-container grid-list-xs>
-    <v-footer id="footer">
-        <v-card class="footer_card textStyle">
-            <div id="footer_slogan">
-                <p>Расчитать долг по чеку просто!</p>
-            </div>
-            <div id="footer_contact">
-                <p>По вопросам писать в telegram: <span class="contact_tg">@wladgraft</span></p>
-            </div>
-            <div id="footer_dateCreate">
-                <p>&#x24b8 2024</p>
-            </div>
-        </v-card>
-    </v-footer>
-</v-container>
+    <v-container>
+        <v-footer id="footer"><!--Подвал страницы содержащий слоган, контакты и год создания страницы-->
+            <v-card class="footer_card textStyle">
+                <div id="footer_slogan">
+                    <p>Расчитать долг по чеку просто!</p>
+                </div>
+                <div id="footer_contact">
+                    <p>По вопросам писать в telegram: <span class="contact_tg">@wladgraft</span></p>
+                </div>
+                <div id="footer_dateCreate">
+                    <p>&#x24b8 2024</p>
+                </div>
+            </v-card>
+        </v-footer>
+    </v-container>
 </template>
     
 <script>
 
 export default{
     name:'Start',
-    data(){
-        return{
-            rules:[
-                "Необходимо добавить минимум 2 человека и 2 блюда, для расчета долга по чеку"
-            ]
-        }
-    }
+
 }
 </script>
     

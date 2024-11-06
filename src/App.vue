@@ -1,6 +1,6 @@
 <template>
     <v-app id="app">
-        <router-view />
+        <router-view /> <!--Добавление маршрутизации в проект-->
     </v-app>
 </template>
   
@@ -12,9 +12,10 @@ export default{
   
 <style lang="scss">
 @import "../src/styles/mixins.scss";
+// Глобальные стили, которые используются во всем проекте
 .btn {
     @include btn-style;
-    @include textStyle;
+    color: #B0E0E6 !important;
 }
 .border-radius {
     @include border-radius;

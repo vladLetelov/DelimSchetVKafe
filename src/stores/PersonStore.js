@@ -3,15 +3,15 @@ import { usePositionStore } from './PositionStore';
 
 export const usePersonStore = defineStore('personStore', {
     state: () => ({
-      peoples: [],
-      isAddPerson: false,
-      debts: [],
+      peoples: [], // Объявление массива персон
+      isAddPerson: false, // проверка добавленна ли персона
+      debts: [], // Массив хранящий долги
     }),
     actions: {
-      addPerson(name) {
+      addPerson(name) {//метод добавления имени персоны и начального баланса
           this.peoples.push({ name, balance: 0 });
       },
-      delitePerson(index) {
+      delitePerson(index) {//метод удаления персоны
         const removedPerson = this.peoples[index].name;
       this.peoples.splice(index, 1);
 
@@ -48,6 +48,7 @@ export const usePersonStore = defineStore('personStore', {
             });
         });
 
+        //сохранение долга если выполняется условие
         this.debts = Object.entries(rawDebts).flatMap(([key, amount]) => {
             const [payer, debtor] = key.split('-');
             if (amount > 0) {

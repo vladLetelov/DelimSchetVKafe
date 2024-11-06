@@ -1,9 +1,9 @@
-import { createApp } from 'vue'
+import { createApp } from 'vue' // Создание проекта на фраймворке Vue.js
 import './style.css'
 import App from './App.vue'
-import router from './router'
-import { createPinia } from 'pinia'
-import vuetify from './plugins/Vuetify'
+import router from './router' // Использование библиотеки маршрутизации
+import { createPinia } from 'pinia' // Использование библиотеки pinia для создания сторов
+import vuetify from './plugins/Vuetify' // Использование библиотеки vuetify
 
 const app = createApp(App)
 const pinia = createPinia();

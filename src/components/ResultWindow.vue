@@ -1,9 +1,9 @@
 <template>
-<v-container grid-list-xs>
-    <v-card class="cardStyle">
-        <v-card-title primary-title class="text-center"> 
+<v-container>
+    <v-card class="cardStyle"><!--Карточка содержащая долги-->
+        <v-card-title class="textStyle"> 
             Итоговые результаты
-            <v-bottom-sheet>
+            <v-bottom-sheet><!--Подсказка о долгах-->
                 <template v-slot:activator="{ props }">
                     <v-btn v-bind="props" text="?" color="blue" class="border-radius"></v-btn>
                 </template>
@@ -22,21 +22,21 @@
         <v-container>
             <v-card class="cardStyle list"
                 v-if="debts.length > 0">
-                <v-card-text class="textStyle"
+                <v-card-text
                     v-for="(debt, index) in debts"
                     :key="index"
                 >
                     {{ debt.from }} должен {{ debt.to }} <span>{{ debt.amount.toFixed(2) }} рублей</span>
                 </v-card-text>
-            </v-card>
+            </v-card><!--Карточки с долгами в формате кто, кому и сколько должен-->
             <v-card class="cardStyle"
                 v-else>
-                <v-card-text>
+                <v-card-text><!--Если счет был поделен поровну выводится сообщение, что никто ничего не должен-->
                     Никто, никому, ничего не должен
                 </v-card-text>
             </v-card>
             <v-btn class="btn"
-            @click="this.$router.back()">Назад</v-btn>
+            @click="this.$router.back()">Назад</v-btn><!--Кнопка для возврата на страницу добавления позици-->
         </v-container>
     </v-card>
 </v-container>
@@ -56,7 +56,7 @@ export default{
         const positionStore = usePositionStore();
         const {dishPosition} = storeToRefs(positionStore);
 
-          userStore.CalculateDebt(); // Вызываем обновление долгов
+          userStore.CalculateDebt(); // Вызываем метод получения долгов
 
 
         return{
@@ -71,14 +71,9 @@ export default{
 <style lang="scss" scoped>
 @import "../styles/mixins.scss";
 
-.text-center{
-    text-align: center;
-    @include textStyle;
-}
-
-span{
+span{// цвет и нижнее подчеркивание суммы долна
     text-decoration: underline;
-    color:red;
+    color: #EAE7DC;
 }
 
 
