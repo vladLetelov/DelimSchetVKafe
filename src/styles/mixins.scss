@@ -3,9 +3,9 @@
 }
 
 @mixin btn-style {
-    background-color: none !important;
-    border:2px solid #007B82 !important;
-    margin: auto;
+    background-color: none !important; //отсутствие фона кнопки, указан как важный, необходимо чтобы стили не перекрывались стилями из vuetify.
+    border:2px solid #007B82 !important; // рамка кнопки, ее цвет, толщина и тип
+    margin: auto; // центрирование кнопки
 }
 
 @mixin border-radius {

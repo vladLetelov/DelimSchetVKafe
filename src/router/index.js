@@ -26,9 +26,7 @@ const router = createRouter({
         component:DishPosition,
         beforeEnter:(to, from, next)=>{
           const personStorage = usePersonStore();
-          if(personStorage.peoples.length === 1){ //Если количество персон равно 1, то пользователя попросят добавить еще персону
-            alert("Чтобы продолжить добавьте еще персону");
-          }else if(personStorage.peoples.length > 1){//Если персон больше 1, то происходит переход на следующую страницу
+          if(personStorage.peoples.length > 1){//Если персон больше 1, то происходит переход на следующую страницу
             next()
           }else{
             next({name:'start'});// Иначе пользователя возвращает на стартовую страницу
@@ -41,9 +39,7 @@ const router = createRouter({
         component:ResultWindow,
         beforeEnter:(to, from, next)=>{
           const positionStore = usePositionStore();
-          if(positionStore.dishPosition.length === 1){ 
-            alert("Чтобы продолжить добавьте еще позицию");
-          }else if(positionStore.dishPosition.length > 1){
+          if(positionStore.dishPosition.length > 1){
             next()
           }else{
             next({name:'start'});

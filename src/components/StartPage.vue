@@ -5,8 +5,10 @@
                 Расчитать долги
             </v-card-title>
             <v-card-actions>
-                <v-btn class="btn"
-                    @click="this.$router.push({name: 'addPerson'})">Начать</v-btn><!--Кнопка, которая переносит пользователя на страницу добавления персон-->
+                <v-btn 
+                  class="btn"
+                  @click="this.$router.push({name: 'addPerson'})"
+                >Начать</v-btn><!--Кнопка, которая переносит пользователя на страницу добавления персон-->
             </v-card-actions>
         </v-card>
     </v-container>
@@ -32,7 +34,6 @@
 
 export default{
     name:'Start',
-
 }
 </script>
     

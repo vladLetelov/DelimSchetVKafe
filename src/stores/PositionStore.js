@@ -1,41 +1,56 @@
-import {defineStore} from 'pinia';
+import { defineStore } from 'pinia';
+import { ref } from 'vue';
+import { v4 as uuidv4 } from 'uuid';
 
 
+export const usePositionStore = defineStore('positionStore', () => {
+    // Определение состояния
+    const dishPosition = ref([]); // массив всех позиций
+    const result = ref(0); // результат суммы всех позиций
+    const isResultBtnActive = ref(false); // переменная для отображения кнопки
+    const editingPosition = ref(null); // проверка режима редактирования
 
-export const usePositionStore = defineStore('positionStore', {
-    state: () => ({
-        dishPosition:[],//массив содержащий все позиции
-        result: 0, //результат суммы всех позиций
-        isResultBtnActive: false, // переменная отвечающая за условие создания кнопки
-        editingPosition: null, // проверка находится ли пользователь в режиме редактирования
-    }),
-    actions: {
-        addDishPosition(payerName, namePosition, price, persons){ // метод добавления новой позиции
-            this.dishPosition.push(
-                {
-                    payerName,
-                    namePosition,
-                    price,
-                    persons,
-                }
-            );
-        },
-        delDishPosition(index){ // удаление позиции по индексу
-            this.dishPosition.splice(index,1);
-        },
-        updateDishPosition(editingIndex, payerName, namePosition, price, persons){ // обновление данных о позиции
-            this.dishPosition[editingIndex].payerName = payerName;
-            this.dishPosition[editingIndex].namePosition = namePosition;
-            this.dishPosition[editingIndex].price = price;
-            this.dishPosition[editingIndex].persons = persons;
-        },
-        updatePositionsAfterPersonRemoval(removedPerson) { // метод удаления позиции, если были удалены все персоны этой позиции
-            this.dishPosition = this.dishPosition.filter(position => {
+    // Методы
+    const AddDishPosition = (payerName, namePosition, price, persons) => {
+        dishPosition.value.push({
+            id: uuidv4(),
+            payerName,
+            namePosition,
+            price,
+            persons,
+          });
+    };
 
-              position.persons = position.persons.filter(person => person !== removedPerson);
+    const DelDishPosition = (id) => {
+        dishPosition.value = dishPosition.value.filter((position) => position.id !== id);
+      };
 
-              return position.persons.length > 0;
-            });
-          },
-    },
+    const updateDishPosition = (id, updatedPosition) => {
+        const index = dishPosition.value.findIndex((pos) => pos.id === id);
+        if (index !== -1) {
+          dishPosition.value[index] = {
+            ...dishPosition.value[index],
+            ...updatedPosition,
+          };
+        }
+      }
+
+    const updatePositionsAfterPersonRemoval = (removedPerson) => {
+        dishPosition.value = dishPosition.value.filter((position) => {
+            position.persons = position.persons.filter((person) => person !== removedPerson);
+            return position.persons.length > 0;
+        });
+    };
+
+    // Возвращаем состояние и методы
+    return {
+        dishPosition,
+        result,
+        isResultBtnActive,
+        editingPosition,
+        AddDishPosition,
+        DelDishPosition,
+        updateDishPosition,
+        updatePositionsAfterPersonRemoval,
+    };
 });
