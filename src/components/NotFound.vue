@@ -8,14 +8,19 @@ export default {
   <v-container>
     <!--Отображение ошибки о неправильном пути-->
     <v-card 
-      class="cardStyle block-center textStyle" width="80%">
+      class="cardStyle block-center textStyle"
+      width="80%">
       <v-card-title class="textCenter"> Страница не найдена! </v-card-title>
       <div class="notFoundImg">
         <!--Изображение с номером ошибки-->
         <img src="../assets/NotFoundPhoto.png" />
       </div>
       <v-card-actions>
-        <v-btn class="btnStart" @click="$router.back()">Назад</v-btn>
+        <v-btn 
+          class="btnStart" 
+          @click="$router.back()"
+          text="Назад"
+        />
         <!--Кнопка ведущая на предыдущую страницу-->
       </v-card-actions>
     </v-card>

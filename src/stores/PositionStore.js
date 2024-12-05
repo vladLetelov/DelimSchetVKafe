@@ -11,7 +11,7 @@ export const usePositionStore = defineStore('positionStore', () => {
     const editingPosition = ref(null); // проверка режима редактирования
 
     // Методы
-    const AddDishPosition = (payerName, namePosition, price, persons) => {
+    const addDishPosition = (payerName, namePosition, price, persons) => {
         dishPosition.value.push({
             id: uuidv4(),
             payerName,
@@ -21,7 +21,7 @@ export const usePositionStore = defineStore('positionStore', () => {
           });
     };
 
-    const DelDishPosition = (id) => {
+    const delDishPosition = (id) => {
         dishPosition.value = dishPosition.value.filter((position) => position.id !== id);
       };
 
@@ -48,8 +48,8 @@ export const usePositionStore = defineStore('positionStore', () => {
         result,
         isResultBtnActive,
         editingPosition,
-        AddDishPosition,
-        DelDishPosition,
+        addDishPosition,
+        delDishPosition,
         updateDishPosition,
         updatePositionsAfterPersonRemoval,
     };

@@ -1,8 +1,7 @@
 <template>
   <v-container>
     <v-card class="cardStyle textStyle">
-      <v-card-title v-if="!isEdited"
-        ><!--Условие если пользователь в режиме редактирования, меняется текст-->
+      <v-card-title v-if="!isEdited"><!--Условие если пользователь в режиме редактирования, меняется текст-->
         Добавление новой позиции
         <v-bottom-sheet
           ><!-- действия при нажатии на кнопку вызова подсказки -->
@@ -12,8 +11,7 @@
               text="?" 
               color="blue" 
               class="border-radius"
-            >
-            </v-btn>
+            />
           </template>
 
           <v-card width="50%" class="block-center textStyle">
@@ -30,8 +28,7 @@
         </v-bottom-sheet>
       </v-card-title>
       <v-card-title v-else> Редактирование позиции </v-card-title>
-      <v-container
-        ><!--Заполнение полей для создания новой позиции-->
+      <v-container><!--Заполнение полей для создания новой позиции-->
         <v-select
           v-model="payerName"
           :items="peoples"
@@ -39,15 +36,13 @@
           item-title="name"
           :rules="validationActive ? [rules.nullFielsds] : []"
           label="Выберите платильщика"
-        >
-        </v-select>
-        <!--Поле выбора платильщика-->
+        /><!--Поле выбора платильщика-->
         <v-text-field
           v-model="namePosition"
           name="name"
           :rules="validationActive ? [rules.nullFielsds] : []"
           label="Наименование позиции"
-        ></v-text-field>
+        />
         <!--Поле ввода название позиции-->
         <v-text-field
           v-model="price"
@@ -55,8 +50,7 @@
           :rules="validationActive ? [rules.nullFielsds, rules.bigPrice] : []"
           label="Стоимость"
           type="number"
-        ></v-text-field
-        ><!--Поле ввода стоимости позиции-->
+        /><!--Поле ввода стоимости позиции-->
         <v-select
           v-model="persons"
           :items="peoples"
@@ -66,17 +60,21 @@
           label="Выберите человека/людей"
           chips
           multiple
-        >
-          <!--Поле выбора человек участвующих при расчете долгов-->
-        </v-select>
+        /><!--Поле выбора человек участвующих при расчете долгов-->
       </v-container>
       <v-card-actions>
-        <v-btn class="btn" @click="$router.back()">Назад</v-btn
-        ><!--Кнопка возврата на страницу добавления персон-->
-        <v-btn class="btn" @click="AddDishPosition" v-if="!isEdited"
-        :disabled="!isFieldValid"
-          >Добавить</v-btn
-        ><!--Кнопка добавления новой позиции с введенными данными-->
+        <v-btn 
+          class="btn" 
+          @click="$router.back()"
+          text="Назад"
+        /><!--Кнопка возврата на страницу добавления персон-->
+        <v-btn 
+          v-if="!isEdited"
+          :disabled="!isFieldValid"
+          class="btn" 
+          @click="addDishPosition" 
+          text="Добавить"
+        /><!--Кнопка добавления новой позиции с введенными данными-->
       </v-card-actions>
     </v-card>
   </v-container>
@@ -85,39 +83,36 @@
     ><!--Контейнер содержащий информацию о позициях-->
     <v-card class="cardStyle textStyle">
       <v-card-title> Информация о позициях </v-card-title>
-      <v-card-text v-if="dishPosition.length <= 0"
-        ><!--Проверка, если массив позиций пуст, то появляется соответствующая надпись-->
+      <v-card-text v-if="dishPosition.length <= 0"><!--Проверка, если массив позиций пуст, то появляется соответствующая надпись-->
         Список позиций пуст...
       </v-card-text>
 
-      <v-card
-        ><!--Вывод позиции ввиде карточек содержащих введенную пользователем информацию-->
+      <v-card><!--Вывод позиции ввиде карточек содержащих введенную пользователем информацию-->
         <v-card-title
           v-for="(position, index) in dishPosition"
           :key="position.id"
-          class="list cardStyle textStyle"
-        >
+          class="list cardStyle textStyle">
           Позиция {{ index + 1 }}: {{ positionInfo(position) }}
           <v-container class="d-flex">
             <v-btn
               color="red"
               :disabled="isEdited"
-              @click="DelDishPosition(position.id)"
-              >Удалить</v-btn
-            ><!--Кнопка для удаления карточки, в которой она находится-->
+              @click="delDishPosition(position.id)"
+              text="Удалить"
+            /><!--Кнопка для удаления карточки, в которой она находится-->
             <v-btn
               v-if="!isEdited"
               color="yellow"
               @click="editDishPosition(position.id)"
-              >Редактировать</v-btn
-            ><!--Кнопка при нажатии на которую включается режим редактирования-->
+              text="Редактировать"
+            /><!--Кнопка при нажатии на которую включается режим редактирования-->
             <v-btn
               v-else
               color="green"
               :disabled="editingIndex !== position.id"
               @click="saveDishPosition(position.id)"
-              >Сохранить</v-btn
-            ><!--Кнопка, с помощью которой происходит сохранение введеных изменений-->
+              text="Сохранить"
+            /><!--Кнопка, с помощью которой происходит сохранение введеных изменений-->
           </v-container>
         </v-card-title>
       </v-card>
@@ -127,30 +122,29 @@
           :disabled="dishPosition.length < 2"
           class="btn"
           @click="$router.push({ name: 'result' })"
-          >К результатам</v-btn
-        >
+          text="К результатам"
+        />
       </v-card-actions>
     </v-card>
   </v-container>
 
   <v-container>
     <v-card class="textStyle cardStyle">
-      <v-card-title class="text-center"
-        ><!--Подсчет и вывод общего чека-->
-        Общий итог: {{ result }}
+      <v-card-title class="text-center"><!--Подсчет и вывод общего чека-->
+        Общий итог: {{ totalResult }}
       </v-card-title>
     </v-card>
   </v-container>
 </template>
 
 <script>
-import { ref, onBeforeUnmount, onMounted, nextTick } from "vue";
+import { ref, onBeforeUnmount, onMounted, nextTick, computed } from "vue";
 import { usePersonStore } from "../stores/PersonStore.js";
 import { storeToRefs } from "pinia";
 import { usePositionStore } from "../stores/PositionStore.js";
 
 export default {
-  name: "AddDishPosition",
+  name: "addDishPosition",
   setup() {
     const personStore = usePersonStore(); //объявление переменной для стора персон
     const { peoples } = storeToRefs(personStore); //Получение из стора персон массива людей
@@ -165,7 +159,7 @@ export default {
     const price = ref("");
     const persons = ref([]);
     const rules = {
-      nullFielsds: value => !!value || 'Поле не должно быть пустым!',
+      nullFielsds: value => !!value.trim() || 'Поле не должно быть пустым!',
       nullArray: Array => Array.length > 0 || 'Поле не должно быть пустым!',
       bigPrice: value => (value > 0 && value < 99999) || 'Диапазон значений от 1 до 99999!'
     }
@@ -185,53 +179,37 @@ export default {
     };
 
     // Проверка валидности всех полей
-    const isFieldValid = () => {
+    const isFieldValid = computed(() => {
       return !!payerName.value &&
-            !!namePosition.value &&
-            !!price.value &&
-            persons.value.length > 0;    
-    }
+        !!namePosition.value.trim() &&
+        !!price.value &&
+        persons.value.length > 0;
+    });
 
     const isEdited = ref(false); //проверка, находится ли пользователь в режиме редактирования
     const editingIndex = ref(""); //Индекс редактируемой позиции
 
-    const AddDishPosition = () => {
-      //метод добавления новой позиции
-      if (
-        payerName.value.trim() !== "" &&
-        namePosition.value.trim() !== "" &&
-        price.value.trim() !== "" &&
-        persons.length !== 0 &&
-        isFieldValid()
-      ) 
-      {
-        //проверка, что все поля заполнены
-        if (price.value > 0 && price.value < 99999) 
-        {
-          //ограничение цены пози
-          positionStore.AddDishPosition(
-            payerName.value,
-            namePosition.value,
-            price.value,
-            persons.value
-          );
-          clearForm();
+    const addDishPosition = () => {//метод добавления новой позиции
+      if (price.value > 0 && price.value < 99999) {//ограничение цены пози
+        positionStore.addDishPosition(
+          payerName.value,
+          namePosition.value,
+          price.value,
+          persons.value
+        );
+        clearForm();
 
-          isResultBtnActive.value = true;
-          resultCalculate(); //вызов метода для изменения результата общего чека
-        } 
+        isResultBtnActive.value = true;
       }
     };
 
-    const DelDishPosition = (id) => {
+    const delDishPosition = (id) => {
       //Удаление выбранной позиции
-      positionStore.DelDishPosition(id);
-      if (dishPosition.value.length <= 0) 
-      {
+      positionStore.delDishPosition(id);
+      if (dishPosition.value.length <= 0) {
         //если позиций нет, то кнопка перехода на страницу расчета долгов удаляется
         isResultBtnActive.value = false;
       }
-      resultCalculate(); //Перерасчет общей суммы за все позиции при их удалении
     };
 
     const editDishPosition = (id) => {
@@ -250,40 +228,30 @@ export default {
 
     const saveDishPosition = (id) => {
       //аналогичен методу добавления записи, только метод редактирования не создает новую запись, а обновляет старую
-      if (
-        payerName.value.trim() !== "" &&
-        namePosition.value.trim() !== "" &&
-        price.value.trim() !== "" &&
-        persons.value.length > 0
-      ) {
-        if (price.value > 0 && price.value < 99999) {
-          positionStore.updateDishPosition(id, {
-            payerName: payerName.value,
-            namePosition: namePosition.value,
-            price: price.value,
-            persons: persons.value,
-          });
+      if (price.value > 0 && price.value < 99999) {
+        positionStore.updateDishPosition(id, {
+          payerName: payerName.value,
+          namePosition: namePosition.value,
+          price: price.value,
+          persons: persons.value,
+        });
 
-          clearForm();
-          isEdited.value = false;
-          editingIndex.value = "";
-          resultCalculate();
-          console.log(dishPosition);
-        }
+        clearForm();
+        isEdited.value = false;
+        editingIndex.value = "";
       }
     };
 
     const positionInfo = (info) => {
-  const persons = info.persons ? info.persons.join(", ") : "Не указаны";
-  return `Платильцик: ${info.payerName || "Не указан"}; Наименование: ${info.namePosition || "Не указано"}; 
-  Цена: ${info.price || "0"}; Кто ел/пил: ${persons}`;
-};
-
-    const resultCalculate = () => {
-      // Расчет общей суммы за все позиции
-      const sum = dishPosition.value.reduce((total, item) => total + Number(item.price), 0);
-      positionStore.result = sum;
+      const persons = info.persons ? info.persons.join(", ") : "Не указаны";
+      return `Платильцик: ${info.payerName || "Не указан"}; Наименование: ${info.namePosition || "Не указано"}; 
+      Цена: ${info.price || "0"}; Кто ел/пил: ${persons}`;
     };
+
+    // Вычисляемое свойство для расчета общей суммы
+    const totalResult = computed(() => {
+      return dishPosition.value.reduce((total, item) => total + Number(item.price), 0);
+    });
 
     onMounted(() => {
       window.addEventListener("beforeunload", handleBeforeUnload);
@@ -305,12 +273,11 @@ export default {
       price,
       persons,
       dishPosition,
-      AddDishPosition,
+      addDishPosition,
       positionInfo,
-      resultCalculate,
-      result,
+      totalResult,
       isResultBtnActive,
-      DelDishPosition,
+      delDishPosition,
       editDishPosition,
       isEdited,
       saveDishPosition,

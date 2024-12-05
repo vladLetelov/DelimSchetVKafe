@@ -24,7 +24,7 @@
         <!-- Добавление новой персоны -->
         <v-text-field
           v-model="newPerson"
-          :rules="[rules.nullField]"
+          :rules="[rules.nullField, rules.doubleName]"
           name="name"
           label="Добавить персону"
           density="comfortable"
@@ -37,9 +37,9 @@
             text="Назад"
           />
           <v-btn 
-            :disabled="!newPerson || !newPerson.trim()"
+            :disabled="!newPerson || !newPerson.trim() || isDuplicate"
             class="btn"
-            @click="AddPerson"
+            @click="addPerson"
             text="Добавить"
           />
         </v-card-actions>
@@ -47,14 +47,13 @@
     </v-card>
   </v-container>
 
-  <v-container class="d-flex flex-column" v-if="isAddPerson">
+  <v-container class="d-flex flex-column" v-if="isaddPerson">
     <!--Контейнер со списком всех персон-->
     <v-card class="cardStyle">
       <v-card-text
         v-for="people in peoples"
         :key="people.id"
-        class="d-flex justify-between list textStyle"
-      ><!--С помощью цикла вывод имен всех персон из массива people-->
+        class="d-flex justify-between list textStyle"><!--С помощью цикла вывод имен всех персон из массива people-->
         {{ people.name }}
         <v-btn 
           color="red" 
@@ -70,14 +69,13 @@
           text="Далее"
         /><!--Кнопка для перехода на страницу добавления позиций-->
       </v-card-actions>
-
     </v-card>
   </v-container>
 </template>
 
 <script>
 // Импорт необходимых данных и методов
-import { ref, onMounted, onBeforeUnmount, watch } from "vue";
+import { ref, onMounted, onBeforeUnmount, computed } from "vue";
 import { usePersonStore } from "../stores/PersonStore.js";
 import { storeToRefs } from "pinia";
 
@@ -87,28 +85,35 @@ export default {
     const newPerson = ref(null); // Строка принимающая введенное пользователем имя
     const personStore = usePersonStore(); //переменная для взаимодействия с хранилищем персон
     //получение массива персон и булевой переменной определяющей была ли добавлена персона
-    const { peoples, isAddPerson } = storeToRefs(personStore);
+    const { peoples, isaddPerson } = storeToRefs(personStore);
 
     const rules = { // Правило которое отображает ошибку если поле имени пустое
-      nullField: value => !!value || 'Поле не должно быть пустым!'
+      nullField: value => !!value || 'Поле не должно быть пустым!',
+      doubleName: value => {
+        if (!value) return true; // Пропуск проверки, если поле пустое
+        const duplicate = peoples.value.some(person => person.name === value.trim());
+        return !duplicate || 'Имя уже существует!';
+      }
     }
 
-    const AddPerson = () => {
+    const addPerson = () => {
       //Метод добавления новой персоны и сохранения ее в хранилище
-      if (newPerson.value && newPerson.value.trim() !== '') 
-      {
-        personStore.AddPerson(newPerson.value);
+      if (newPerson.value && newPerson.value.trim() !== '') {
+        personStore.addPerson(newPerson.value);
         newPerson.value = null;
-        isAddPerson.value = true;
+        isaddPerson.value = true;
       } 
     };
 
+    const isDuplicate = computed(() => { // Метод проверяющий дублируется имя или нет
+      return peoples.value.some(person => person.name === newPerson.value.trim());
+    });
+
     const delPerson = (id) => {
       //удаление персоны по кнопке, находящейся рядом с ней
-      personStore.DelitePerson(id);
-      if (peoples.value.length <= 0) 
-      {
-        isAddPerson.value = false;
+      personStore.delitePerson(id);
+      if (peoples.value.length <= 0) {
+        isaddPerson.value = false;
       }
     };
 
@@ -127,10 +132,11 @@ export default {
     return {
       peoples,
       newPerson,
-      AddPerson,
+      addPerson,
       delPerson,
-      isAddPerson,
+      isaddPerson,
       rules,
+      isDuplicate,
     };
   },
 };

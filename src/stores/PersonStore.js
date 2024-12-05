@@ -6,15 +6,15 @@ import { v4 as uuidv4 } from 'uuid';
 export const usePersonStore = defineStore("personStore", () => {
   // Состояние
   const peoples = ref([]); // Массив персон
-  const isAddPerson = ref(false); // Проверка, добавлена ли персона
+  const isaddPerson = ref(false); // Проверка, добавлена ли персона
   const debts = ref([]); // Массив долгов
 
   // Методы
-  const AddPerson = (name) => {
+  const addPerson = (name) => {
     peoples.value.push({ id: uuidv4(), name, balance: 0 });
   };
 
-  const DelitePerson = (id) => {
+  const delitePerson = (id) => {
     // Находим индекс персоны с заданным id
     const personIndex = peoples.value.findIndex((person) => person.id === id);
 
@@ -34,7 +34,7 @@ export const usePersonStore = defineStore("personStore", () => {
     positionStore.updatePositionsAfterPersonRemoval(removedPerson);
   };
 
-  const CalculateDebt = () => {
+  const calculateDebt = () => {
     // Очищаем предыдущие данные долгов
     debts.value = [];
 
@@ -65,7 +65,7 @@ export const usePersonStore = defineStore("personStore", () => {
 
     // Сохраняем долги, фильтруя записи с ненулевым значением
     debts.value = Object.entries(rawDebts)
-      .filter(([, amount]) => amount !== 0) // Фильтруем только актуальные долги
+      .filter(([_key, amount]) => amount !== 0) // Фильтруем только актуальные долги
       .flatMap(([key, amount]) => {
         const [payer, debtor] = key.split("-");
         if (amount > 0) {
@@ -73,17 +73,16 @@ export const usePersonStore = defineStore("personStore", () => {
         } else if (amount < 0) {
           return { from: payer, to: debtor, amount: -amount };
         }
-        return [];
       });
   };
 
   // Возвращаем состояние и методы
   return {
     peoples,
-    isAddPerson,
+    isaddPerson,
     debts,
-    AddPerson,
-    DelitePerson,
-    CalculateDebt,
+    addPerson,
+    delitePerson,
+    calculateDebt,
   };
 });

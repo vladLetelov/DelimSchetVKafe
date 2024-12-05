@@ -12,7 +12,7 @@
               text="?"
               color="blue"
               class="border-radius"
-            ></v-btn>
+            />
           </template>
 
           <v-card width="50%" class="block-center textStyle">
@@ -25,7 +25,7 @@
       </v-card-title>
       <v-container>
         <v-card v-if="debts.length > 0" class="cardStyle list" >
-          <v-card-text v-for="(debt, index) in debts" :key="index">
+          <v-card-text v-for="(debt) in debts">
             {{ debt.from }} должен {{ debt.to }}
             <span>{{ debt.amount.toFixed(2) }} рублей</span>
           </v-card-text> </v-card
@@ -36,8 +36,13 @@
             Никто, никому, ничего не должен
           </v-card-text>
         </v-card>
-        <v-btn class="btn" @click="this.$router.back()">Назад</v-btn
-        ><!--Кнопка для возврата на страницу добавления позици-->
+        <v-card-actions>
+          <v-btn 
+            class="btn" 
+            @click="this.$router.back()"
+            text="Назад"
+          /><!--Кнопка для возврата на страницу добавления позици-->
+        </v-card-actions>
       </v-container>
     </v-card>
   </v-container>
@@ -57,7 +62,7 @@ export default {
     const positionStore = usePositionStore();
     const { dishPosition } = storeToRefs(positionStore);
 
-    personStore.CalculateDebt(); // Вызываем метод получения долгов
+    personStore.calculateDebt(); // Вызываем метод получения долгов
 
     return {
       dishPosition,
