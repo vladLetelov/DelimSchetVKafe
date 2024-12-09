@@ -3,8 +3,7 @@
     <v-card class="cardStyle textStyle">
       <v-card-title v-if="!isEdited"><!--Условие если пользователь в режиме редактирования, меняется текст-->
         Добавление новой позиции
-        <v-bottom-sheet
-          ><!-- действия при нажатии на кнопку вызова подсказки -->
+        <v-bottom-sheet><!-- действия при нажатии на кнопку вызова подсказки -->
           <template v-slot:activator="{ props }">
             <v-btn 
               v-bind="props" 
@@ -79,8 +78,7 @@
     </v-card>
   </v-container>
 
-  <v-container
-    ><!--Контейнер содержащий информацию о позициях-->
+  <v-container><!--Контейнер содержащий информацию о позициях-->
     <v-card class="cardStyle textStyle">
       <v-card-title> Информация о позициях </v-card-title>
       <v-card-text v-if="dishPosition.length <= 0"><!--Проверка, если массив позиций пуст, то появляется соответствующая надпись-->
@@ -91,7 +89,8 @@
         <v-card-title
           v-for="(position, index) in dishPosition"
           :key="position.id"
-          class="list cardStyle textStyle">
+          class="list cardStyle textStyle"
+        >
           Позиция {{ index + 1 }}: {{ positionInfo(position) }}
           <v-container class="d-flex">
             <v-btn

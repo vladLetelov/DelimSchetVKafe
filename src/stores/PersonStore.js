@@ -56,7 +56,8 @@ export const usePersonStore = defineStore("personStore", () => {
           // Увеличиваем долг, если он уже существует, иначе создаем новую запись
           if (rawDebts[reverseKey]) {
             rawDebts[reverseKey] -= costPerPerson;
-          } else {
+          } 
+          else {
             rawDebts[key] = (rawDebts[key] || 0) + costPerPerson;
           }
         }

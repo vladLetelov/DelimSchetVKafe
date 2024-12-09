@@ -9,7 +9,8 @@ export default {
     <!--Отображение ошибки о неправильном пути-->
     <v-card 
       class="cardStyle block-center textStyle"
-      width="80%">
+      width="80%"
+    >
       <v-card-title class="textCenter"> Страница не найдена! </v-card-title>
       <div class="notFoundImg">
         <!--Изображение с номером ошибки-->

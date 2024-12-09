@@ -53,7 +53,8 @@
       <v-card-text
         v-for="people in peoples"
         :key="people.id"
-        class="d-flex justify-between list textStyle"><!--С помощью цикла вывод имен всех персон из массива people-->
+        class="d-flex justify-between list textStyle"
+      ><!--С помощью цикла вывод имен всех персон из массива people-->
         {{ people.name }}
         <v-btn 
           color="red" 

@@ -1,11 +1,9 @@
 <template>
   <v-container>
-    <v-card class="cardStyle"
-      ><!--Карточка содержащая долги-->
+    <v-card class="cardStyle"><!--Карточка содержащая долги-->
       <v-card-title class="textStyle">
         Итоговые результаты
-        <v-bottom-sheet
-          ><!--Подсказка о долгах-->
+        <v-bottom-sheet><!--Подсказка о долгах-->
           <template v-slot:activator="{ props }">
             <v-btn
               v-bind="props"
@@ -28,11 +26,10 @@
           <v-card-text v-for="(debt) in debts">
             {{ debt.from }} должен {{ debt.to }}
             <span>{{ debt.amount.toFixed(2) }} рублей</span>
-          </v-card-text> </v-card
-        ><!--Карточки с долгами в формате кто, кому и сколько должен-->
+          </v-card-text>
+        </v-card><!--Карточки с долгами в формате кто, кому и сколько должен-->
         <v-card v-else class="cardStyle">
-          <v-card-text
-            ><!--Если счет был поделен поровну выводится сообщение, что никто ничего не должен-->
+          <v-card-text><!--Если счет был поделен поровну выводится сообщение, что никто ничего не должен-->
             Никто, никому, ничего не должен
           </v-card-text>
         </v-card>
